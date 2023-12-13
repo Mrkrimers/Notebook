@@ -1,0 +1,39 @@
+header {
+    padding: 10px 160px;
+    background: #ffff;
+
+    .container {
+        display: flex;
+        justify-content: space-around;
+
+        h2 {
+            color: var(--Black, #232134);
+            font: 600 24px Poppins;
+            line-height: normal;
+            letter-spacing: -0.48px;
+        }
+
+
+        .wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 50px;
+
+            p {
+                color: #232134;
+                font: 500 16px Inter;
+
+                &:hover {
+                    transition: all 0.5s;
+                    scale: 1.2;
+                }
+            }
+
+            .active {
+                color: #5E96FC;
+                text-decoration: underline;
+            }
+        }
+    }
+}
