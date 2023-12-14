@@ -3,7 +3,7 @@ main {
     height: 100vh;
 
     .rest {
-        padding-top: 30px;
+        padding-top: 20px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -32,8 +32,66 @@ main {
         }
     }
 
+    .wrapperNotes {
+        display: flex;
+        flex-direction: row;
+        gap: 8px;
+        flex-wrap: wrap;
+        align-content: space-between;
+        justify-content: center;
+        align-items: center;
+
+        margin-top: 15px;
+
+        h2 {
+            text-align: center;
+            width: 100%;
+        }
+
+        div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 170px;
+            height: 230px;
+            padding: 15px;
+            background: #ffffff;
+
+            border-radius: 15px;
+            word-break: break-word;
+
+            &:hover {
+                cursor: pointer;
+                border: 1px solid black;
+                box-shadow: 3px 4px 5px 0px #6395f4;
+            }
+
+            &:active {
+                background-color: #5E96FC;
+
+            }
+        }
+
+        .active {
+            background-color: #6395f4;
+        }
+
+        h3 {
+            color: var(--Black, #232134);
+            font: 700 16px Inter;
+        }
+
+        p {
+            color: var(--Black, #232134);
+            font: 400 12px Inter;
+            text-align: center;
+        }
+
+    }
+
     .wrapperAction {
-        margin-top: 30px;
+        margin-top: 10px;
         display: flex;
         flex-direction: column;
         flex-wrap: nowrap;
@@ -46,35 +104,4 @@ main {
         }
     }
 
-    .wrapperNotes {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-
-        div {
-            padding: 15px;
-            background: #F7F7F8;
-            opacity: 1;
-
-            &:hover {
-                cursor: pointer;
-                border: 1px solid black;
-            }
-
-            &:active {
-                background-color: #5E96FC;
-            }
-        }
-
-        .active {
-            background-color: #6395f4;
-            opacity: 0.7;
-        }
-
-        h3 {
-            color: var(--Black, #232134);
-            font: 700 20px Inter;
-        }
-
-    }
 }

@@ -28,38 +28,45 @@ function AdminPage() {
             setData(dataDB);
         }
         openDatabase();
-    }, [])
+    }, [data])
 
     const addData = async () => {
-        const db = await openDB('myDatabase', 1);
-        const transaction = db.transaction('myStore', 'readwrite');
-        const store = transaction.objectStore('myStore');
+        try {
+            const db = await openDB('myDatabase', 1);
+            const transaction = db.transaction('myStore', 'readwrite');
+            const store = transaction.objectStore('myStore');
+            const newData = { id: inp.note, fieldName: inp.description };
 
-        const newData = { id: inp.note, fieldName: inp.description };
+            if (inp.note.trim() == '') throw new Error('Note is empty')
+            await store.add(newData);
 
-        await store.add(newData);
-        setData([...data, newData]);
+            setData([...data, newData]);
+
+        } catch (err) {
+            console.log(err.message);
+        }
     };
-
 
     const getData = async (e) => {
         const db = await openDB('myDatabase', 1);
         const transaction = db.transaction('myStore', 'readwrite');
         const store = transaction.objectStore('myStore');
-        const { id, fieldName } = await store.get(e.target.getAttribute('name'));
+        const { id } = await store.get(e.target.getAttribute('name'));
         setActiveDiv(e.target.getAttribute('name'));
-        setInp({ note: id, description: fieldName })
+        setInp({ note: id, description: '' })
     }
 
     const putData = async () => {
-        const db = await openDB('myDatabase', 1);
-        const transaction = db.transaction('myStore', 'readwrite');
-        const store = transaction.objectStore('myStore');
         try {
-            if (inp.description == '') throw new Error('Description is empty')
-
+            const db = await openDB('myDatabase', 1);
+            const transaction = db.transaction('myStore', 'readwrite');
+            const store = transaction.objectStore('myStore');
+            if (inp.note.trim() == '') throw new Error('Select a note')
+            if (inp.description.trim() == '') throw new Error('Description is empty')
             const newData = { id: inp.note, fieldName: inp.description };
             await store.put(newData);
+
+            alert('заметка обновилась')
         } catch (err) {
             console.log(err.message);
         }
@@ -118,6 +125,23 @@ function AdminPage() {
                 <h2 onClick={(e) => setOpt(e.target.textContent)} className={opt === 'Обновление' ? style.active : null}>Обновление</h2>
             </div>
 
+            <div className={style.wrapperNotes}>
+                {opt === 'Создание' ? <h2>Текущие заметки</h2> : <h2>Для обновления описания необходимо выбрать заметку</h2>}
+                {opt === 'Создание' ? data?.map((el) =>
+                    <div key={el.id} className={style.item}>
+                        <h3 >{el.id}</h3>
+                        <p>{el.fieldName}</p>
+                    </div>
+                ) : data?.map((el) =>
+                    <div key={el.id}
+                        name={el.id}
+                        onClick={getData}
+                        className={activeDiv === el.id ? style.active : style.item} >
+                        <h3 name={el.id}>{el.id}</h3>
+                    </div>
+                )}
+            </div>
+
             <div className={style.wrapperAction}>
 
                 {showContent()}
@@ -128,20 +152,7 @@ function AdminPage() {
 
             </div>
 
-            <div className={style.wrapperNotes}>
-                {opt === 'Создание' ? data?.map((el) =>
-                    <div key={el.id}>
-                        <h3 >{el.id}</h3>
-                        <p>{el.fieldName}</p>
-                    </div>
-                ) : data?.map((el) =>
-                    <div key={el.id} name={el.id}
-                        onClick={getData}
-                        className={activeDiv === el.id ? style.active : null} >
-                        <h3 name={el.id}>{el.id}</h3>
-                    </div>
-                )}
-            </div>
+
         </main >
     )
 }
